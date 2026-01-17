@@ -166,5 +166,5 @@ Este MVP está preparado para:
 
 ## Autor
 
-Thales Prates  
+Thales S. Prates  
 
