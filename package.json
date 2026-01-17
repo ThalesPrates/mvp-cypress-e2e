@@ -1,0 +1,19 @@
+{
+  "name": "desaf-cy",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:smoke": "cypress run --env grep=@smoke",
+    "cy:login": "cypress run --env grep=@login",
+    "cy:e2e": "cypress run --env grep=@e2e"
+  },
+  "devDependencies": {
+    "cypress": "^15.9.0",
+    "cypress-grep": "^3.0.4",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.0",
+    "mochawesome-report-generator": "^6.3.2"
+  }
+}
