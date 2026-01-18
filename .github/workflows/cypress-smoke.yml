@@ -1,0 +1,41 @@
+name: Cypress Smoke
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Instalar dependencias
+        run: npm ci --legacy-peer-deps
+
+      - name: Rodar Smoke Tests
+        run: npm run cy:smoke
+
+      - name: Upload screenshots (se falhar)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - name: Upload videos (sempre)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos
