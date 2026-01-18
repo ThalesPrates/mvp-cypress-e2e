@@ -29,6 +29,9 @@ describe('Realizar um checkout com sucesso', () => {
     cy.url().should('include', '/login')
   })
 
+  it('nao deveria rodar no smoke', () => { throw new Error('RODOU ERRADO') })
+
+
 })
 
 

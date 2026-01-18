@@ -9,7 +9,6 @@ on:
 jobs:
   smoke:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do codigo
         uses: actions/checkout@v4
@@ -20,11 +19,19 @@ jobs:
           node-version: 18
           cache: "npm"
 
+      - name: Cache Cypress binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('package-lock.json') }}
+
       - name: Instalar dependencias
         run: npm ci --legacy-peer-deps
 
       - name: Rodar Smoke Tests
         run: npm run cy:smoke
+        env:
+          NODE_OPTIONS: ""
 
       - name: Upload screenshots (se falhar)
         if: failure()

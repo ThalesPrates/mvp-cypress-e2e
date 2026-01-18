@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "cy:open": "cypress open",
-    "cy:run": "cypress run",
-    "cy:smoke": "cypress run --env grep=@smoke",
-    "cy:login": "cypress run --env grep=@login",
-    "cy:e2e": "cypress run --env grep=@e2e"
+  "cy:open": "cypress open",
+  "cy:run": "cypress run",
+  "cy:smoke": "cypress run --env grep=@smoke,grepFilterSpecs=true",
+  "cy:login": "cypress run --env grep=@login,grepFilterSpecs=true",
+  "cy:e2e": "cypress run --env grep=@e2e,grepFilterSpecs=true"
   },
   "devDependencies": {
     "cypress": "^15.9.0",
