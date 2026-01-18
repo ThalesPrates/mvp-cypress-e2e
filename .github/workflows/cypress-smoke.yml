@@ -21,7 +21,7 @@ jobs:
           cache: "npm"
 
       - name: Instalar dependencias
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Rodar Smoke Tests
         run: npm run cy:smoke
