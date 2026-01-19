@@ -1,221 +1,175 @@
-# 🧪 MVP Cypress E2E
+MVP CYPRESS E2E
 
 Este repositório contém um MVP de automação end-to-end com Cypress,
 criado para demonstrar organização de framework, boas práticas de QA e
-preparo para execução em pipeline (CI).
+preparo para execução em CI.
 
-O foco aqui não é quantidade de testes, e sim **estrutura, clareza e
-estratégia de qualidade**: como o projeto é organizado, como funciona a
-execução seletiva e como isso se encaixa em um fluxo de CI/CD.
+O foco não é volume de testes, e sim estrutura, clareza e estratégia:
+como os testes são organizados, como a execução seletiva funciona e como
+isso se conecta com um pipeline real.
 
-------------------------------------------------------------------------
-
-## 🎯 Objetivo
+OBJETIVO
 
 Este projeto foi criado para:
 
--   Demonstrar uma estrutura básica e escalável de automação com
-    Cypress\
--   Automatizar fluxos E2E reais do ponto de vista do usuário\
--   Aplicar Page Objects e Custom Commands\
--   Usar tags para execução seletiva de testes (smoke, login, e2e)\
--   Mostrar preparo para integração com pipeline de CI/CD
+-   Demonstrar uma estrutura simples e escalável de automação com
+    Cypress
+-   Automatizar fluxos E2E do ponto de vista do usuário
+-   Separar smoke tests de testes E2E completos
+-   Usar tags para execução seletiva (@smoke, @e2e, @login)
+-   Demonstrar integração com pipeline no GitHub Actions
 
-------------------------------------------------------------------------
+APLICAÇÃO UTILIZADA
 
-## 🌐 Aplicação utilizada
+Site público para prática de automação:
 
-Site público para testes de automação:
+https://automationexercise.com
 
-👉 https://automationexercise.com
+FLUXOS AUTOMATIZADOS NO MVP
 
-------------------------------------------------------------------------
+Automação propositalmente enxuta, priorizando estratégia e estrutura.
 
-## ✅ Fluxos automatizados no MVP
-
-> Observação: automação propositalmente enxuta, focada em demonstrar
-> abordagem técnica e não cobertura total.
-
--   Login\
--   Fluxo de compra (checkout fictício)\
--   Validação de sucesso do pedido\
+-   Login de usuário
+-   Adição de produto ao carrinho
+-   Validação de item no carrinho
+-   Fluxo completo de checkout
 -   Logout
 
-------------------------------------------------------------------------
+ESTRUTURA DO PROJETO
 
-## 📁 Estrutura do projeto
+cypress/
+ ├─ e2e/
+ │   ├─ auth/
+ │   │   └─ login.cy.js
+ │   ├─ checkout/
+ │   │   └─ checkout-success.cy.js
+ │   └─ smoke.cy.js
+ │
+ ├─ support/
+ │   ├─ commands.js
+ │   └─ e2e.js
+ │
+ ├─ screenshots/
+ └─ videos/
 
-``` text
-mvp-cypress-e2e/
-├── cypress/
-│   ├── e2e/
-│   │   ├── autent/login.cy.js
-│   │   └── checkout/checkout-successo.cy.js
-│   │
-│   ├── pages/
-│   │   ├── CartPage.js
-│   │   └── CheckoutPage.js
-│   │
-│   ├── support/
-│   │   ├── commands.js
-│   │   └── e2e.js
-│   │
-│   ├── screenshots/
-│   └── videos/
-│
-├── cypress.config.js
-├── package.json
-├── .github/workflows/
-│   └── smoke.yml
-└── README.md
-```
+.github/
+ └─ workflows/
+    └─ smoke.yml
 
-------------------------------------------------------------------------
+cypress.config.js
+package.json
+README.txt
 
-## 🧠 Estratégia adotada
+ORGANIZAÇÃO ADOTADA
 
--   Testes E2E cobrindo fluxos completos do usuário\
--   Page Object Model para centralizar regras de tela e reduzir
-    duplicação\
--   Custom Commands para ações reutilizáveis (ex: login, adicionar
-    produto ao carrinho)\
--   Specs focadas em comportamento, não em detalhes técnicos de
-    implementação\
--   Separação entre testes de smoke e testes E2E completos via tags
+-   Specs organizados por feature
+-   Smoke separado em arquivo próprio
+-   Estrutura preparada para crescimento sem virar monólito
 
-------------------------------------------------------------------------
+ESTRATÉGIA DE TESTES
 
-## 🧪 Exemplo de teste com tag
+-   Smoke tests validam se o sistema está funcional (login + carrinho)
+-   Testes E2E validam fluxo completo de negócio (checkout)
+-   Execução seletiva por tag reduz tempo de feedback no CI
 
-``` js
-describe('Login do usuário', () => {
+USO DE TAGS
 
-  it('Deve realizar login com sucesso @smoke @login', () => {
-    cy.login(user.email, user.password)
-    cy.contains('Logged in as').should('be.visible')
-  })
+As tags são usadas diretamente no título dos testes e filtradas com
+cypress-grep.
 
-})
-```
+Tags utilizadas:
 
-As tags ficam no **título do teste** e são usadas pelo plugin
-`cypress-grep` para filtrar a execução.
+-   @smoke -> validações rápidas e essenciais
+-   @login -> testes de autenticação
+-   @e2e -> fluxos completos de negócio
 
-------------------------------------------------------------------------
+Exemplo:
 
-## 🏷️ Uso de tags
+describe(‘@smoke Carrinho: login e item no carrinho’, () => { it(‘deve
+permitir login e adicionar produto’, () => { … }) })
 
-As tags permitem rodar apenas um subconjunto de testes, algo muito comum
-em pipelines.
+EXECUÇÃO LOCAL
 
-Tags utilizadas no projeto:
+Instalar dependências:
 
--   `@smoke` → testes rápidos para validação básica do sistema\
--   `@login` → testes relacionados a autenticação\
--   `@e2e` → fluxos completos de ponta a ponta
-
-------------------------------------------------------------------------
-
-## ▶️ Como executar localmente
-
-### Instalar dependências
-
-``` bash
 npm install
-```
 
-### Abrir Cypress em modo interativo
+Abrir Cypress (modo interativo):
 
-``` bash
 npm run cy:open
-```
 
-### Executar todos os testes
+Executar todos os testes:
 
-``` bash
 npm run cy:run
-```
 
-### Executar apenas testes smoke
+Executar apenas smoke:
 
-``` bash
 npm run cy:smoke
-```
 
-### Executar apenas testes de login
+Executar apenas E2E:
 
-``` bash
-npm run cy:login
-```
+npm run cy:e2e
 
-------------------------------------------------------------------------
+EXECUÇÃO SELETIVA POR TAG
 
-## 🔍 Como funciona a execução por tag
+O projeto usa o plugin cypress-grep para filtrar testes por tag.
 
-O projeto utiliza o plugin **cypress-grep** para permitir filtragem por
-tag.
+Exemplo no package.json:
 
-Nos scripts do `package.json`:
+“cy:smoke”: “cypress run –env grep=@smoke,grepFilterSpecs=true”
 
-``` json
-"cy:smoke": "cypress run --env grep=@smoke,grepFilterSpecs=true"
-```
+O parâmetro grepFilterSpecs=true garante que apenas os arquivos que
+contêm testes com a tag informada sejam executados.
 
-O parâmetro `grepFilterSpecs=true` garante que apenas os arquivos que
-possuem testes com a tag informada sejam executados, evitando que specs
-sem relação com o smoke entrem na execução.
+SOBRE CREDENCIAIS NO CÓDIGO
 
-------------------------------------------------------------------------
+Neste MVP, as credenciais estão hardcoded nos testes apenas para fins de
+demonstração.
 
-## 📸 Evidências (screenshots)
+Em um cenário real, essas informações devem ser externalizadas via
+Cypress.env() e secrets do pipeline para evitar dados sensíveis no
+repositório e permitir múltiplos usuários por ambiente.
 
-O Cypress está configurado para gerar screenshots automaticamente quando
-ocorre falha de teste:
+Essa decisão foi mantida simples propositalmente para não adicionar
+complexidade de infraestrutura ao MVP.
 
-``` js
-screenshotOnRunFailure: true
-```
+USO DE IA NO DESENVOLVIMENTO DO MVP
 
-Os arquivos são salvos em:
+Parte do código e da documentação deste MVP foi gerada com apoio de IA,
+como forma de acelerar a criação do protótipo.
 
-``` text
+A curadoria, os ajustes técnicos, as decisões de estratégia de testes e
+a validação dos fluxos foram realizados manualmente.
+
+EVIDÊNCIAS DE FALHA
+
+O Cypress gera screenshots automaticamente quando ocorre erro de teste.
+
+Arquivos em:
+
 cypress/screenshots/
-```
 
-No pipeline, essas evidências são coletadas como artefatos para análise
-em caso de falha.
+No pipeline, esses arquivos são coletados como artefatos para análise.
 
-------------------------------------------------------------------------
+PIPELINE (CI)
 
-## ⚙️ Pipeline (CI)
+O projeto possui um workflow no GitHub Actions que:
 
-O projeto já conta com um workflow no GitHub Actions que:
-
--   Executa testes **@smoke** em pull requests e pushes na main\
--   Gera evidências (screenshots e vídeos) quando necessário\
--   Está preparado para expansão futura (ex: execução noturna de @e2e)
+-   Executa testes @smoke em PRs e pushes na main
+-   Usa Node compatível com Cypress 15
+-   Está preparado para expansão futura (ex: E2E noturno)
 
 Arquivo:
 
-``` text
 .github/workflows/smoke.yml
-```
 
-------------------------------------------------------------------------
+PRÓXIMAS EVOLUÇÕES POSSÍVEIS
 
-## 🚀 Próximas evoluções possíveis
-
-Alguns próximos passos naturais para esse MVP seriam:
-
--   Geração de relatório HTML (Mochawesome) no pipeline\
--   Execução por ambiente (dev, hml, etc.)\
--   Paralelização de testes\
--   Gestão mais robusta de dados de teste\
+-   Geração de relatório HTML (Mochawesome)
+-   Execução por ambiente (dev / hml / prod)
+-   Paralelização de specs
+-   Gestão de dados de teste (fixtures e factories)
 -   Integração com dashboards de qualidade
 
-------------------------------------------------------------------------
-
-## 👤 Autor
-
-**Thales S. Prates**\
-QA Engineer \| Automação \| Estratégia de Qualidade
+AUTOR
+Thales S. Prates

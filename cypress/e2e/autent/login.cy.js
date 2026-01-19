@@ -1,20 +1,24 @@
-describe('Login do usuário', () => {
+/// <reference types="cypress" />
 
-  it('Deve realizar login com sucesso @smoke', () => {
+describe('Login do usuário @login', () => {
+
+  beforeEach(() => {
+        cy.visit('https://automationexercise.com/')
+  })
+
+  it('Deve realizar login com sucesso', () => {
     cy.fixture('user').then(user => {
-      cy.login(user.email, user.password)
-      cy.contains('Logged in as').should('be.visible')
+      cy.loginComSucesso(user.email, user.password)
     })
   })
 
-  it('Não deve logar com senha inválida',() => {
-     cy.fixture('user').then(user => {
-      cy.login(user.email, 'senhaincorreta')
-      cy.contains('Your email or password is incorrect!').should('be.visible')
+  it('Não deve logar com senha inválida', () => {
+    cy.fixture('user').then(user => {
+      cy.tentarLogin(user.email, 'senhaincorreta')
+      cy.contains('Your email or password is incorrect!')
+        .should('be.visible')
     })
-  
-})
-
+  })
 
 })
 
