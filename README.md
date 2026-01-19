@@ -1,3 +1,4 @@
+
 MVP CYPRESS E2E
 
 Este repositório contém um MVP de automação end-to-end com Cypress,
@@ -12,12 +13,11 @@ OBJETIVO
 
 Este projeto foi criado para:
 
--   Demonstrar uma estrutura simples e escalável de automação com
-    Cypress
--   Automatizar fluxos E2E do ponto de vista do usuário
--   Separar smoke tests de testes E2E completos
--   Usar tags para execução seletiva (@smoke, @e2e, @login)
--   Demonstrar integração com pipeline no GitHub Actions
+- Demonstrar uma estrutura simples e escalável de automação com Cypress
+- Automatizar fluxos E2E do ponto de vista do usuário
+- Separar smoke tests de testes E2E completos
+- Usar tags para execução seletiva (@smoke, @e2e, @login, @crud)
+- Demonstrar integração com pipeline no GitHub Actions
 
 APLICAÇÃO UTILIZADA
 
@@ -29,11 +29,12 @@ FLUXOS AUTOMATIZADOS NO MVP
 
 Automação propositalmente enxuta, priorizando estratégia e estrutura.
 
--   Login de usuário
--   Adição de produto ao carrinho
--   Validação de item no carrinho
--   Fluxo completo de checkout
--   Logout
+- Login de usuário
+- Adição de produto ao carrinho
+- Validação de item no carrinho
+- Fluxo completo de checkout
+- Logout
+- CRUD simples: criação e exclusão de conta (cadastro + delete)
 
 ESTRUTURA DO PROJETO
 
@@ -43,6 +44,8 @@ cypress/
  │   │   └─ login.cy.js
  │   ├─ checkout/
  │   │   └─ checkout-success.cy.js
+ │   ├─ crud/
+ │   │   └─ conta-crud.cy.js
  │   └─ smoke.cy.js
  │
  ├─ support/
@@ -62,15 +65,16 @@ README.txt
 
 ORGANIZAÇÃO ADOTADA
 
--   Specs organizados por feature
--   Smoke separado em arquivo próprio
--   Estrutura preparada para crescimento sem virar monólito
+- Specs organizados por feature
+- Smoke separado em arquivo próprio
+- Estrutura preparada para crescimento sem virar monólito
 
 ESTRATÉGIA DE TESTES
 
--   Smoke tests validam se o sistema está funcional (login + carrinho)
--   Testes E2E validam fluxo completo de negócio (checkout)
--   Execução seletiva por tag reduz tempo de feedback no CI
+- Smoke tests validam se o sistema está funcional (login + carrinho)
+- Testes E2E validam fluxo completo de negócio (checkout)
+- CRUD garante criação e limpeza de dados, evitando sujeira no ambiente
+- Execução seletiva por tag reduz tempo de feedback no CI
 
 USO DE TAGS
 
@@ -79,14 +83,16 @@ cypress-grep.
 
 Tags utilizadas:
 
--   @smoke -> validações rápidas e essenciais
--   @login -> testes de autenticação
--   @e2e -> fluxos completos de negócio
+- @smoke -> validações rápidas e essenciais
+- @login -> testes de autenticação
+- @e2e -> fluxos completos de negócio
+- @crud -> fluxos de criação e remoção de dados
 
 Exemplo:
 
-describe(‘@smoke Carrinho: login e item no carrinho’, () => { it(‘deve
-permitir login e adicionar produto’, () => { … }) })
+describe('@smoke Carrinho: login e item no carrinho', () => {
+  it('deve permitir login e adicionar produto', () => { ... })
+})
 
 EXECUÇÃO LOCAL
 
@@ -110,13 +116,17 @@ Executar apenas E2E:
 
 npm run cy:e2e
 
+Executar apenas CRUD:
+
+npx cypress run --spec "cypress/e2e/crud/conta-crud.cy.js"
+
 EXECUÇÃO SELETIVA POR TAG
 
 O projeto usa o plugin cypress-grep para filtrar testes por tag.
 
 Exemplo no package.json:
 
-“cy:smoke”: “cypress run –env grep=@smoke,grepFilterSpecs=true”
+"cy:smoke": "cypress run --env grep=@smoke,grepFilterSpecs=true"
 
 O parâmetro grepFilterSpecs=true garante que apenas os arquivos que
 contêm testes com a tag informada sejam executados.
@@ -155,9 +165,9 @@ PIPELINE (CI)
 
 O projeto possui um workflow no GitHub Actions que:
 
--   Executa testes @smoke em PRs e pushes na main
--   Usa Node compatível com Cypress 15
--   Está preparado para expansão futura (ex: E2E noturno)
+- Executa testes @smoke em PRs e pushes na main
+- Usa Node compatível com Cypress 15
+- Está preparado para expansão futura (ex: E2E noturno)
 
 Arquivo:
 
@@ -165,11 +175,11 @@ Arquivo:
 
 PRÓXIMAS EVOLUÇÕES POSSÍVEIS
 
--   Geração de relatório HTML (Mochawesome)
--   Execução por ambiente (dev / hml / prod)
--   Paralelização de specs
--   Gestão de dados de teste (fixtures e factories)
--   Integração com dashboards de qualidade
+- Geração de relatório HTML (Mochawesome)
+- Execução por ambiente (dev / hml / prod)
+- Paralelização de specs
+- Gestão de dados de teste (fixtures e factories)
+- Integração com dashboards de qualidade
 
 AUTOR
 Thales S. Prates
