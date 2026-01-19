@@ -16,8 +16,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: "npm"
+
+      - name: Debug ambiente Node
+        run: |
+          echo "Node version:"
+          node -v
+          echo "NPM version:"
+          npm -v
+          echo "NODE_OPTIONS:"
+          echo "$NODE_OPTIONS"
 
       - name: Cache Cypress binary
         uses: actions/cache@v4
@@ -27,6 +36,10 @@ jobs:
 
       - name: Instalar dependencias
         run: npm ci --legacy-peer-deps
+
+      - name: Debug Cypress
+        run: |
+          npx cypress --version
 
       - name: Rodar Smoke Tests
         run: npm run cy:smoke
