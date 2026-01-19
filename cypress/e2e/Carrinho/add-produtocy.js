@@ -1,17 +1,20 @@
-describe('Carrinho - Adicionar produto',  { tags: ['@e2e'] }, () => {
+import CartPage from '../../pages/CartPage'
+
+describe('Carrinho - Adicionar produto', () => {
 
   beforeEach(() => {
     cy.fixture('user').then(user => {
-      cy.login(user.email, user.password)
+      cy.loginComSucesso(user.email, user.password)
     })
   })
 
   it('Deve adicionar produto ao carrinho', () => {
-    cy.addProductToCart()
-    cy.contains('Cart').click()
-    cy.get('.cart_description')
-      .should('have.length.at.least', 1)
+    cy.adicionarProdutoAoCarrinho()
+
+    CartPage.abrirCarrinho()
+    CartPage.validarQueHaItensNoCarrinho()
   })
 
 })
+
 
